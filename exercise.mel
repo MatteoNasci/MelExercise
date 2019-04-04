@@ -1,0 +1,76 @@
+global proc spawn_polygons(){
+    string $sphere1[] = `polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1`;
+    string $sphere2[] = `polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1`;
+    string $sphere3[] = `polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1`;
+    move -r -x 5 0 0 $sphere2[0];
+    move -r -x 10 0 0 $sphere3[0];
+    string $cube1[] = `polyCube -w 1 -h 1 -d 1 -sx 1 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1`;
+    string $cube2[] = `polyCube -w 1 -h 1 -d 1 -sx 1 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1`;
+    string $cube3[] = `polyCube -w 1 -h 1 -d 1 -sx 1 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1`;
+    move -r -y 3 0 0 $cube1[0];
+    move -r -xy 5 3 0 $cube2[0];
+    move -r -xy 10 3 0 $cube3[0];
+/*
+    vector $color1 = <<1,0,0>>;
+    createRenderNodeCB -asShader "surfaceShader" lambert "assignCreatedShader %type \"\" %node $cube1[0]";
+    shadingNode -asShader lambert;
+    // Result: lambert2 // 
+    sets -renderable true -noSurfaceShader true -empty -name lambert2SG;
+    // Result: lambert2SG // 
+    connectAttr -f $color1 lambert2SG.surfaceShader;
+    // Result: Connected lambert2.outColor to lambert2SG.surfaceShader. // 
+    assignCreatedShader "lambert" "" lambert2 $cube1[0];
+    sets -e -forceElement lambert2SG;
+
+    vector $color2 = <<0,1,0>>;
+    vector $color3 = <<0,0,1>>;
+
+
+    hyperShade -assign lambert1 $cube1[1];
+    sets -e -forceElement initialShadingGroup;
+    hyperShade -assign lambert1 $cube2[1];
+    sets -e -forceElement initialShadingGroup;
+    hyperShade -assign blinn1 $cube3[1];
+    sets -e -forceElement initialShadingGroup;*/
+}
+
+global proc move_up(){
+    move -r -y 1.5 0 0;
+}
+global proc print_selected_count(){
+    string $list[] = `ls -sl`;
+    print(size($list));
+}
+global proc print_selected_types(){
+    string $list[] = `ls -sl`;
+    int $joints = 0;
+    int $meshes = 0;
+    int $transforms = 0;
+    for($item in $list){
+        string $type = `nodeType $item`;
+        if($type == "joint"){
+            $joints++;
+        }
+        else if($type == "mesh"){
+            $meshes++;
+        }
+        else if($type == "transform"){
+            $transforms++;
+        }
+    }
+    print("Currently selected " + $transforms + " transforms, " + $meshes + " meshes, " + $joints + " joints!");
+}
+global proc welcoming_window(){
+    string $winName = "Welcome";
+    if(`window -q -exists $winName`){
+        deleteUI $winName;
+    }
+
+    window -s 0 $winName;
+    window -e -h 400 -w 500 $winName;
+        columnLayout -columnAttach "both" 5 -rowSpacing 10 -columnWidth 250;
+            string $fileName = textField -editable true -width 110;
+            button -l "Push!" -c "print(\"Welcome \" + `textField -q -tx $my_text`)";
+        setParent..;
+    showWindow;
+}
