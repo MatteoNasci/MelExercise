@@ -69,7 +69,8 @@ global proc welcoming_window(){
     window -s 0 $winName;
     window -e -h 400 -w 500 $winName;
         columnLayout -columnAttach "both" 5 -rowSpacing 10 -columnWidth 250;
-            string $fileName = textField -editable true -width 110;
+            global string $my_text;
+            $my_text = `textField -editable true -width 110`;
             button -l "Push!" -c "print(\"Welcome \" + `textField -q -tx $my_text`)";
         setParent..;
     showWindow;
