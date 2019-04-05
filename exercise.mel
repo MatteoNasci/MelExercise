@@ -53,7 +53,7 @@ global proc move_up(){
 }
 global proc print_selected_count(){
     string $list[] = `ls -sl`;
-    string $nodes[] = `ls -long -selection -dep`;
+    string $nodes[] = `listHistory -future true`; //`ls -long -selection -dep`;
     print("Objects selected: " + size($list) + ", nodes associated with those objects: " + size($nodes));
 }
 global proc print_selected_types(){
